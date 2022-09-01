@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
-import { WEBSOCKET_ENDPOINT, WEBSOCKET_NOTIFY_TOPIC } from '../constants/base-url.constants';
+import { WEBSOCKET_ENDPOINT, WEBSOCKET_NOTIFY_TOPIC, WEBSOCKET_ELEMENTS_STATUS, WEBSOCKET_CALL_WAITER } from '../constants/base-url.constants';
 import { NotificationService } from './notification.service';
 
 @Injectable({
@@ -22,6 +22,14 @@ export class WebsocketService {
         _this.stompClient.subscribe(WEBSOCKET_NOTIFY_TOPIC +"/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
             _this.onMessageReceived(sdkEvent);
         });
+
+        _this.stompClient.subscribe(WEBSOCKET_ELEMENTS_STATUS +"/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
+          _this.onMessageReceived(sdkEvent);
+      });
+
+      _this.stompClient.subscribe(WEBSOCKET_CALL_WAITER +"/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
+        _this.onMessageReceived(sdkEvent);
+    });
     }, this.errorCallBack);
 }
 
