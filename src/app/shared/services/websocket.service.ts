@@ -9,27 +9,30 @@ import { NotificationService } from './notification.service';
 })
 export class WebsocketService {
   stompClient: any;
-
+  token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MjczY2IxZGJkMzhiMDJlMTZiOTFjYjAiLCJjb21hcHlJZCI6IjYyNzNjYjFkYmQzOGIwMmUxNmI5MWNiMCIsImlzQWRtaW4iOmZhbHNlLCJyZXN0YXVyYW50SWQiOiI2MjczY2IxZGJkMzhiMDJlMTZiOTFjYjIiLCJhdXRob3JpdGllcyI6Ik5FV19VU0VSIiwiZXhwIjoxNjYyMjIyOTAzLCJpYXQiOjE2NjE2MTgxMDN9.H3WmmN27jnG8FyGGTuedkB0sUDUWWUjg6DyhoVGJUSHGBGOe5faWyKXWE3aGJfDxcQUOSwUUSzGhAYJHxijOTw";
   constructor(private notificationService: NotificationService) { }
 
   connect(): void {
     console.log('webSocket Connection');
     const ws = new SockJS(WEBSOCKET_ENDPOINT);
-
+    
     this.stompClient = Stomp.over(ws);
     const _this = this;
-    _this.stompClient.connect({}, function(frame: any) {
+    var headers = {
+      Authorization: 'Bearer '+ this.token 
+    };
+    _this.stompClient.connect(headers, function(frame: any) {
         _this.stompClient.subscribe(WEBSOCKET_NOTIFY_TOPIC +"/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
             _this.onMessageReceived(sdkEvent);
         });
 
-        _this.stompClient.subscribe(WEBSOCKET_ELEMENTS_STATUS +"/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
-          _this.onMessageReceived(sdkEvent);
-      });
+      //   _this.stompClient.subscribe(WEBSOCKET_ELEMENTS_STATUS +"/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
+      //     _this.onMessageReceived(sdkEvent);
+      // });
 
-      _this.stompClient.subscribe(WEBSOCKET_CALL_WAITER +"/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
-        _this.onMessageReceived(sdkEvent);
-    });
+    //   _this.stompClient.subscribe(WEBSOCKET_CALL_WAITER +"/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
+    //     _this.onMessageReceived(sdkEvent);
+    // });
     }, this.errorCallBack);
 }
 
