@@ -19,7 +19,7 @@ export class WebsocketService {
     this.stompClient = Stomp.over(ws);
     const _this = this;
     _this.stompClient.connect({}, function(frame: any) {
-        _this.stompClient.subscribe(WEBSOCKET_ORDERED_ELEMENTS +"/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
+        _this.stompClient.subscribe(WEBSOCKET_NOTIFY_TOPIC +"/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
             _this.onMessageReceived(sdkEvent);
         });
     }, this.errorCallBack);
