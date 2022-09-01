@@ -19,7 +19,7 @@ export class WebsocketService {
     this.stompClient = Stomp.over(ws);
     const _this = this;
     var headers = {
-      Authorization: 'Bearer '+ this.token 
+      'Authorization': 'Bearer '+ this.token 
     };
     _this.stompClient.connect(headers, function(frame: any) {
         _this.stompClient.subscribe(WEBSOCKET_NOTIFY_TOPIC +"/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
