@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
   notify(message: AppNotification): void {
     this.counter++;
     const options = {
-      body: message.webSocketResource,
+      body: message.content,
       icon: icon.get(message.type.toLowerCase())
     };
     this.pushNotifications.create('New Alert', options).subscribe(

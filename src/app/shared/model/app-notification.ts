@@ -1,5 +1,5 @@
 export interface AppNotification {
-    webSocketResource: string;
+    content: string;
     type: string;
     message: string;
 }
