@@ -13,19 +13,18 @@ export class WebsocketService {
 
   connect(): void {
     var token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MjczY2IxZGJkMzhiMDJlMTZiOTFjYjAiLCJjb21hcHlJZCI6IjYyNzNjYjFkYmQzOGIwMmUxNmI5MWNiMCIsImlzQWRtaW4iOmZhbHNlLCJyZXN0YXVyYW50SWQiOiI2MjczY2IxZGJkMzhiMDJlMTZiOTFjYjIiLCJhdXRob3JpdGllcyI6Ik5FV19VU0VSIiwiZXhwIjoxNjYyODgxMjg3LCJpYXQiOjE2NjIyNzY0ODd9.KYbOR_Og0O_7mNarqXYD-gpdgqMu77bDM4RmM3dCRGN75kcDhohN40J9bcrT0g4xz2Pji3rmT7YDiFulvIp1mg";
-  
-     // var headers: string[] = new Array();
-     var headers = {
-      Authorization : `Bearer ${token}`,
-    };
+
     console.log('webSocket Connection');
-    const ws = new SockJS(`http://localhost:5000/ws-notification`);
+    const ws = new SockJS(`http://localhost:5000/ws-notification?token=${token}`);
     // const ws = new SockJS(WEBSOCKET_ENDPOINT);
     this.stompClient = Stomp.over(ws);
     const _this = this;
    
+    var header = {
+      Authorization: `Bearer ${token}`
+    };
     _this.stompClient.connect({}, function(frame:any) {
-      _this.stompClient.subscribe(WEBSOCKET_ELEMENTS_CREATED + "/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
+      _this.stompClient.subscribe(WEBSOCKET_ORDER_STATUS_CHANGED + "/6273cb1dbd38b02e16b91cb2", function(sdkEvent: any) {
           _this.onMessageReceived(sdkEvent);
       });
   }, this.errorCallBack);
